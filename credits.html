@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Purple Hibiscus — Creators</title>
+  <style>
+    :root {
+      --bg:linear-gradient(135deg,#f4edff 0%,#fef8ea 55%,#f0f7ff 100%);
+      --card-bg:rgba(255,255,255,0.82);
+      --border:rgba(22,24,35,0.12);
+      --text:#1a1d2c;
+      --muted:#5a5f72;
+      --accent:#7849ff;
+      --serif:"Libre Baskerville","Georgia",serif;
+      --sans:"Nunito","Segoe UI",system-ui,sans-serif;
+    }
+
+    * {
+      box-sizing:border-box;
+    }
+
+    body {
+      margin:0;
+      font-family:var(--sans);
+      background:var(--bg);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:var(--text);
+      padding:clamp(2rem,6vw,5rem) clamp(1.2rem,4vw,3.5rem);
+    }
+
+    .frame {
+      width:min(640px,100%);
+      border-radius:30px;
+      border:1px solid var(--border);
+      background:var(--card-bg);
+      backdrop-filter:blur(18px);
+      box-shadow:0 30px 60px rgba(11,13,30,0.15);
+      padding:clamp(2.6rem,5vw,3.4rem);
+      display:grid;
+      gap:2.2rem;
+    }
+
+    header {
+      text-align:center;
+      display:grid;
+      gap:0.9rem;
+    }
+
+    header p {
+      margin:0;
+      letter-spacing:0.24em;
+      text-transform:uppercase;
+      font-size:0.75rem;
+      color:var(--muted);
+    }
+
+    h1 {
+      font-family:var(--serif);
+      margin:0;
+      font-size:clamp(2.1rem,4vw,2.7rem);
+      line-height:1.2;
+    }
+
+    .creators {
+      display:grid;
+      gap:1rem;
+    }
+
+    .name-card {
+      border-radius:18px;
+      border:1px solid rgba(0,0,0,0.08);
+      padding:1.05rem 1.4rem;
+      background:rgba(255,255,255,0.88);
+      box-shadow:0 18px 34px rgba(15,18,31,0.12);
+      font-family:var(--serif);
+      font-size:1.4rem;
+      text-align:center;
+    }
+
+    .actions {
+      display:flex;
+      justify-content:center;
+      gap:0.75rem;
+      flex-wrap:wrap;
+    }
+
+    a.button {
+      text-decoration:none;
+      padding:0.75rem 1.6rem;
+      border-radius:999px;
+      font-weight:600;
+      letter-spacing:0.06em;
+      transition:transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    a.button.primary {
+      background:var(--accent);
+      color:white;
+      box-shadow:0 16px 30px rgba(120,73,255,0.28);
+    }
+
+    a.button.primary:hover,
+    a.button.primary:focus-visible {
+      transform:translateY(-2px);
+      box-shadow:0 22px 36px rgba(120,73,255,0.34);
+    }
+
+    a.button.secondary {
+      background:white;
+      color:#1d2032;
+      border:1px solid rgba(0,0,0,0.08);
+    }
+
+    a.button.secondary:hover,
+    a.button.secondary:focus-visible {
+      transform:translateY(-2px);
+      box-shadow:0 14px 24px rgba(20,22,35,0.15);
+    }
+
+    footer {
+      text-align:center;
+      font-size:0.85rem;
+      color:var(--muted);
+    }
+
+    footer a {
+      color:inherit;
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <header>
+      <p>Creators</p>
+      <h1>Thank you to the team behind this experience</h1>
+    </header>
+
+    <section class="creators" aria-label="Team">
+      <div class="name-card">Shaurya</div>
+      <div class="name-card">Kiara</div>
+      <div class="name-card">Nirvaan</div>
+      <div class="name-card">Saniya</div>
+      <div class="name-card">Jeshna</div>
+    </section>
+
+    <div class="actions">
+      <a class="button primary" href="home.html">Return to the experience</a>
+      <a class="button secondary" href="#team-contact">Say hello</a>
+    </div>
+
+    <footer id="team-contact">
+      Reach us via <a href="mailto:team@purplehibiscus.studio">team@purplehibiscus.studio</a>
+    </footer>
+  </div>
+</body>
+</html>

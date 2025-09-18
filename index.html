@@ -1,0 +1,1178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Purple Hibiscus — Dual Household Experience</title>
+  <style>
+    :root {
+      --bg:#0d0d14;
+      --text:#14141a;
+      --muted:#4f5360;
+      --soft:#f8f7f2;
+      --border:rgba(9,9,20,0.08);
+      --cold-bg:#edf1f6;
+      --cold-deep:#a7b9d4;
+      --cold-highlight:#657a99;
+      --warm-bg:#fff3df;
+      --warm-deep:#e6bc74;
+      --warm-highlight:#b87333;
+      --accent:#7849ff;
+      --slider-value:50;
+      --serif:"Libre Baskerville", "Georgia", serif;
+      --sans:"Nunito", "Segoe UI", system-ui, sans-serif;
+      color-scheme:light;
+    }
+
+    * {
+      box-sizing:border-box;
+    }
+
+    body {
+      margin:0;
+      font-family:var(--sans);
+      background:linear-gradient(135deg,#f7f5ff 0%, #fffdfa 35%, #f2f5ff 100%);
+      color:var(--text);
+      line-height:1.6;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    .page {
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .hero {
+      position:relative;
+      padding:clamp(3rem,6vw,5.5rem) clamp(1.5rem,6vw,5rem) clamp(2rem,5vw,4rem);
+      overflow:hidden;
+      background:radial-gradient(120% 120% at 20% 20%, rgba(120,73,255,0.11) 0%, rgba(120,73,255,0) 60%),
+                 radial-gradient(140% 140% at 80% 0%, rgba(255,185,111,0.18) 0%, rgba(255,185,111,0) 55%),
+                 #ffffffaa;
+      backdrop-filter:blur(18px);
+    }
+
+    .hero::after {
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(110deg, rgba(14,19,40,0.08) 0%, rgba(14,19,40,0) 50%, rgba(222,141,61,0.12) 100%);
+      mix-blend-mode:multiply;
+      pointer-events:none;
+    }
+
+    .hero__content {
+      position:relative;
+      max-width:900px;
+      z-index:1;
+    }
+
+    .hero__eyebrow {
+      letter-spacing:0.24em;
+      text-transform:uppercase;
+      font-size:0.72rem;
+      color:var(--muted);
+      margin-bottom:0.75rem;
+    }
+
+    .hero h1 {
+      font-family:var(--serif);
+      font-size:clamp(2.75rem,5vw,4.1rem);
+      margin:0 0 1rem;
+      line-height:1.18;
+      color:#111322;
+    }
+
+    .hero__lead {
+      max-width:620px;
+      margin:0 0 1.5rem;
+      font-size:1.05rem;
+      color:#2f3342;
+    }
+
+    .hero__actions {
+      display:flex;
+      flex-wrap:wrap;
+      gap:0.75rem;
+      align-items:center;
+    }
+
+    a.hero__cta,
+    a.hero__link,
+    button.audio-button,
+    button.hero__scroll {
+      appearance:none;
+      border:none;
+      border-radius:999px;
+      padding:0.75rem 1.6rem;
+      font-weight:600;
+      font-size:0.95rem;
+      cursor:pointer;
+      transition:transform 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    a.hero__cta {
+      background:var(--accent);
+      color:white;
+      text-decoration:none;
+      box-shadow:0 14px 30px rgba(120,73,255,0.28);
+    }
+
+    a.hero__cta:hover,
+    a.hero__cta:focus-visible {
+      transform:translateY(-2px);
+      box-shadow:0 18px 34px rgba(120,73,255,0.34);
+    }
+
+    a.hero__link,
+    button.hero__scroll {
+      background:rgba(255,255,255,0.65);
+      border:1px solid rgba(20,20,30,0.12);
+      color:#1c2035;
+    }
+
+    a.hero__link:hover,
+    a.hero__link:focus-visible,
+    button.hero__scroll:hover,
+    button.hero__scroll:focus-visible {
+      transform:translateY(-2px);
+      box-shadow:0 12px 24px rgba(17,21,35,0.16);
+    }
+
+    .hero__motif {
+      position:absolute;
+      inset:0;
+      display:grid;
+      place-items:center;
+      pointer-events:none;
+      mix-blend-mode:overlay;
+    }
+
+    .hero__motif svg {
+      width:min(68vw,520px);
+      filter:drop-shadow(0 30px 60px rgba(30,20,60,0.26));
+      opacity:0.08;
+    }
+
+    main {
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      gap:clamp(3rem,6vw,5rem);
+      padding:0 clamp(1.4rem,6vw,4rem) clamp(3rem,6vw,5rem);
+    }
+
+    section {
+      position:relative;
+    }
+
+    .split {
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:clamp(1.4rem,3vw,2.5rem);
+      align-items:start;
+    }
+
+    .panel {
+      border-radius:26px;
+      border:1px solid var(--border);
+      padding:clamp(1.8rem,3.6vw,2.6rem);
+      position:relative;
+      overflow:hidden;
+      box-shadow:0 26px 52px rgba(16,21,38,0.08);
+      background:white;
+      display:flex;
+      flex-direction:column;
+      gap:1.6rem;
+      transform:translateY(40px);
+      opacity:0;
+      transition:opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .panel.is-visible {
+      opacity:1;
+      transform:none;
+    }
+
+    .panel::before {
+      content:"";
+      position:absolute;
+      inset:0;
+      opacity:0.75;
+      pointer-events:none;
+      background:repeating-linear-gradient(135deg, rgba(255,255,255,0.14) 0, rgba(255,255,255,0.14) 20px, transparent 20px, transparent 40px);
+      mix-blend-mode:soft-light;
+    }
+
+    .panel__header {
+      position:relative;
+      z-index:1;
+    }
+
+    .panel__eyebrow {
+      font-size:0.8rem;
+      text-transform:uppercase;
+      letter-spacing:0.18em;
+      margin:0 0 0.5rem;
+      color:var(--muted);
+    }
+
+    .panel__title {
+      font-family:var(--serif);
+      font-size:1.9rem;
+      margin:0 0 0.6rem;
+      line-height:1.3;
+    }
+
+    .panel__tagline {
+      margin:0;
+      color:#2a2e3d;
+      font-weight:600;
+    }
+
+    .panel--eugene {
+      background:linear-gradient(160deg, rgba(255,255,255,0.92) 0%, rgba(237,241,246,0.9) 65%, rgba(208,220,236,0.9) 100%);
+      border-color:rgba(143,161,189,0.3);
+    }
+
+    .panel--eugene::after {
+      content:"";
+      position:absolute;
+      inset:0;
+      background:radial-gradient(110% 110% at 20% 20%, rgba(101,122,153,0.26) 0%, transparent 60%);
+      mix-blend-mode:multiply;
+      pointer-events:none;
+    }
+
+    .panel--ifeoma {
+      background:linear-gradient(165deg, rgba(255,245,232,0.92) 0%, rgba(255,243,223,0.92) 58%, rgba(255,226,193,0.9) 100%);
+      border-color:rgba(232,175,111,0.32);
+    }
+
+    .panel--ifeoma::after {
+      content:"";
+      position:absolute;
+      inset:0;
+      background:radial-gradient(120% 120% at 75% 15%, rgba(255,210,116,0.24) 0%, transparent 70%);
+      mix-blend-mode:multiply;
+      pointer-events:none;
+    }
+
+    .panel__body {
+      position:relative;
+      z-index:1;
+      display:grid;
+      gap:1.2rem;
+    }
+
+    .insight-grid {
+      display:grid;
+      gap:1rem;
+    }
+
+    .insight {
+      background:rgba(255,255,255,0.72);
+      border-radius:20px;
+      padding:1rem 1.1rem 1.2rem;
+      border:1px solid rgba(20,20,30,0.08);
+      position:relative;
+      overflow:hidden;
+      transition:transform 0.4s ease, box-shadow 0.4s ease;
+      cursor:default;
+    }
+
+    .panel--eugene .insight {
+      backdrop-filter:blur(6px);
+    }
+
+    .panel--ifeoma .insight {
+      backdrop-filter:blur(4px);
+      border-color:rgba(215,154,78,0.25);
+    }
+
+    .insight:focus-visible,
+    .insight:hover {
+      transform:translateY(-6px);
+      box-shadow:0 16px 34px rgba(31,25,47,0.18);
+    }
+
+    .insight__title {
+      font-weight:700;
+      font-size:1.05rem;
+      margin:0 0 0.35rem;
+      color:#171b2d;
+    }
+
+    .insight__text {
+      margin:0;
+      font-size:0.95rem;
+      color:#323646;
+    }
+
+    .insight__reveal {
+      position:absolute;
+      inset:0;
+      background:rgba(18,20,35,0.88);
+      color:#f4f6ff;
+      display:grid;
+      place-items:center;
+      padding:1.4rem;
+      text-align:center;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity 0.35s ease;
+      font-size:0.95rem;
+      line-height:1.5;
+    }
+
+    .insight:focus-visible .insight__reveal,
+    .insight:hover .insight__reveal {
+      opacity:1;
+    }
+
+    .insight__tag {
+      display:inline-flex;
+      align-items:center;
+      gap:0.35rem;
+      font-size:0.72rem;
+      letter-spacing:0.18em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+
+    .panel--eugene .insight__tag::before {
+      content:"✧";
+      color:var(--cold-highlight);
+    }
+
+    .panel--ifeoma .insight__tag::before {
+      content:"✹";
+      color:var(--warm-highlight);
+    }
+
+    .quote-card {
+      border-left:3px solid currentColor;
+      padding-left:1rem;
+      font-style:italic;
+      font-size:0.95rem;
+      color:#222437;
+      margin:0;
+    }
+
+    .quote-card strong {
+      display:block;
+      font-style:normal;
+      font-size:0.8rem;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      margin-bottom:0.35rem;
+      color:var(--muted);
+    }
+
+    .contrast {
+      display:grid;
+      gap:1.5rem;
+    }
+
+    .section-heading {
+      margin:0 0 0.3rem;
+      font-family:var(--serif);
+      font-size:2.1rem;
+      color:#161827;
+    }
+
+    .section-lead {
+      margin:0;
+      max-width:720px;
+      color:#303448;
+    }
+
+    .contrast-stage {
+      position:relative;
+      border-radius:32px;
+      border:1px solid rgba(0,0,0,0.08);
+      overflow:hidden;
+      min-height:320px;
+      background:
+        linear-gradient(90deg,
+          rgba(101,122,153,0.45) 0%,
+          rgba(101,122,153,0.3) calc(var(--slider-value) * 1%),
+          rgba(243,190,115,0.35) calc(var(--slider-value) * 1%),
+          rgba(243,190,115,0.48) 100%);
+      color:white;
+      box-shadow:0 30px 55px rgba(18,19,40,0.16);
+    }
+
+    .contrast-panels {
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      position:absolute;
+      inset:0;
+    }
+
+    .contrast-pane {
+      padding:2.4rem clamp(1.4rem,4vw,3rem);
+      display:flex;
+      flex-direction:column;
+      gap:1rem;
+      position:relative;
+      transition:opacity 0.35s ease;
+    }
+
+    .contrast-pane::after {
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(10,12,24,0.55) 0%, rgba(10,12,24,0.05) 100%);
+      mix-blend-mode:multiply;
+      pointer-events:none;
+    }
+
+    .contrast-pane__label {
+      font-size:0.75rem;
+      letter-spacing:0.26em;
+      text-transform:uppercase;
+      color:rgba(255,255,255,0.72);
+      margin:0;
+    }
+
+    .contrast-pane__title {
+      margin:0;
+      font-family:var(--serif);
+      font-size:clamp(1.6rem,3vw,2.2rem);
+      line-height:1.2;
+      color:white;
+      position:relative;
+      z-index:1;
+    }
+
+    .contrast-pane__text {
+      margin:0;
+      font-size:1rem;
+      color:rgba(255,255,255,0.9);
+      position:relative;
+      z-index:1;
+    }
+
+    .contrast-pane--cold {
+      background:radial-gradient(120% 120% at 15% 15%, rgba(237,245,253,0.65) 0%, rgba(43,56,76,0.85) 65%, rgba(20,25,40,0.95) 100%);
+    }
+
+    .contrast-pane--warm {
+      background:radial-gradient(120% 120% at 85% 15%, rgba(255,239,214,0.65) 0%, rgba(217,134,58,0.84) 65%, rgba(140,60,14,0.94) 100%);
+    }
+
+    .contrast-slider {
+      appearance:none;
+      width:100%;
+      margin:0;
+      height:12px;
+      border-radius:999px;
+      background:linear-gradient(90deg, var(--cold-highlight), var(--warm-highlight));
+      outline:none;
+      cursor:pointer;
+      position:relative;
+    }
+
+    .contrast-slider::-webkit-slider-thumb {
+      appearance:none;
+      width:34px;
+      height:34px;
+      border-radius:50%;
+      background:white;
+      border:3px solid rgba(24,26,38,0.18);
+      box-shadow:0 12px 24px rgba(22,24,36,0.24);
+      transition:transform 0.2s ease;
+    }
+
+    .contrast-slider::-moz-range-thumb {
+      width:34px;
+      height:34px;
+      border-radius:50%;
+      border:none;
+      background:white;
+      box-shadow:0 12px 24px rgba(22,24,36,0.24);
+    }
+
+    .contrast-slider:focus-visible::-webkit-slider-thumb {
+      transform:scale(1.08);
+    }
+
+    .contrast-handle {
+      position:absolute;
+      top:12px;
+      left:calc(var(--slider-value) * 1%);
+      transform:translateX(-50%);
+      background:rgba(14,14,24,0.82);
+      color:white;
+      padding:0.45rem 0.8rem;
+      border-radius:12px;
+      font-size:0.8rem;
+      letter-spacing:0.1em;
+      text-transform:uppercase;
+      pointer-events:none;
+      transition:left 0.25s ease;
+    }
+
+    .contrast-tokens {
+      position:absolute;
+      inset:0;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      padding:1.4rem 1.6rem;
+      pointer-events:none;
+      font-size:0.85rem;
+      font-weight:600;
+      letter-spacing:0.12em;
+    }
+
+    .contrast-token {
+      display:inline-flex;
+      align-items:center;
+      gap:0.45rem;
+      background:rgba(255,255,255,0.18);
+      padding:0.35rem 0.75rem;
+      border-radius:999px;
+      backdrop-filter:blur(10px);
+    }
+
+    .contrast-token svg {
+      width:18px;
+      height:18px;
+      fill:currentColor;
+    }
+
+    .accordion-group {
+      display:grid;
+      gap:1rem;
+      max-width:960px;
+      margin:0 auto;
+    }
+
+    .accordion {
+      border-radius:20px;
+      border:1px solid rgba(20,20,30,0.08);
+      background:white;
+      box-shadow:0 20px 38px rgba(20,20,30,0.08);
+      overflow:hidden;
+      transform:translateY(40px);
+      opacity:0;
+      transition:opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .accordion.is-visible {
+      opacity:1;
+      transform:none;
+    }
+
+    .accordion__trigger {
+      width:100%;
+      background:none;
+      border:none;
+      padding:1.2rem 1.5rem;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:1.05rem;
+      font-weight:700;
+      cursor:pointer;
+      text-align:left;
+      letter-spacing:0.04em;
+    }
+
+    .accordion__trigger span {
+      color:var(--muted);
+      font-size:0.85rem;
+      letter-spacing:0.16em;
+      text-transform:uppercase;
+    }
+
+    .accordion__trigger svg {
+      width:22px;
+      height:22px;
+      transition:transform 0.3s ease;
+    }
+
+    .accordion__trigger[aria-expanded="true"] svg {
+      transform:rotate(180deg);
+    }
+
+    .accordion__panel {
+      padding:0 1.5rem 1.5rem;
+      display:grid;
+      gap:1.3rem;
+    }
+
+    .accordion__content {
+      display:grid;
+      gap:1.5rem;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+    .accordion__side {
+      background:rgba(248,248,252,0.94);
+      border-radius:16px;
+      padding:1.2rem 1.4rem;
+      border:1px solid rgba(0,0,0,0.05);
+    }
+
+    .accordion__side--cold {
+      background:linear-gradient(140deg, rgba(234,241,249,0.9) 0%, rgba(214,222,236,0.9) 100%);
+      border-color:rgba(107,139,176,0.28);
+    }
+
+    .accordion__side--warm {
+      background:linear-gradient(140deg, rgba(255,238,210,0.9) 0%, rgba(255,226,190,0.9) 100%);
+      border-color:rgba(210,146,82,0.3);
+    }
+
+    .accordion__title {
+      margin:0 0 0.55rem;
+      font-family:var(--serif);
+      font-size:1.25rem;
+      color:#181b2c;
+    }
+
+    .accordion__list {
+      margin:0;
+      padding-left:1.2rem;
+      color:#303547;
+      font-size:0.95rem;
+      display:grid;
+      gap:0.5rem;
+    }
+
+    .accordion__footnote {
+      font-size:0.85rem;
+      color:var(--muted);
+      margin:0;
+    }
+
+    .audio-bar {
+      display:flex;
+      align-items:center;
+      gap:0.75rem;
+      background:rgba(255,255,255,0.7);
+      border-radius:18px;
+      padding:0.55rem 0.65rem 0.55rem 0.85rem;
+      border:1px solid rgba(20,20,30,0.08);
+      backdrop-filter:blur(12px);
+      width:max-content;
+    }
+
+    .audio-button {
+      background:rgba(20,20,40,0.06);
+      color:#212439;
+      padding:0.55rem 1rem;
+      border-radius:12px;
+      border:1px solid transparent;
+      font-size:0.85rem;
+      transition:all 0.25s ease;
+    }
+
+    .audio-button.is-active {
+      background:var(--accent);
+      color:white;
+      box-shadow:0 10px 22px rgba(120,73,255,0.26);
+    }
+
+    .audio-status {
+      font-size:0.78rem;
+      letter-spacing:0.16em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+
+    .timeline-note {
+      margin:0;
+      font-size:0.9rem;
+      color:#26293a;
+      text-align:center;
+    }
+
+    footer {
+      padding:3rem 1.5rem;
+      text-align:center;
+      font-size:0.85rem;
+      color:#5a5e6f;
+    }
+
+    @media (max-width:1024px) {
+      .split {
+        grid-template-columns:1fr;
+      }
+
+      .contrast-panels {
+        position:relative;
+      }
+
+      .contrast-stage {
+        min-height:380px;
+      }
+
+      .contrast-pane {
+        padding:2rem 1.8rem;
+      }
+
+      .accordion__content {
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media (max-width:720px) {
+      .hero__actions {
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      main {
+        padding:0 1.05rem 3.2rem;
+      }
+
+      .panel {
+        border-radius:20px;
+      }
+
+      .contrast-stage {
+        border-radius:22px;
+      }
+
+      .contrast-token {
+        font-size:0.72rem;
+      }
+
+      .audio-bar {
+        flex-wrap:wrap;
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      *, *::before, *::after {
+        transition-duration:0.01ms !important;
+        animation-duration:0.01ms !important;
+        scroll-behavior:auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="hero" id="top">
+      <div class="hero__content">
+        <p class="hero__eyebrow">Purple Hibiscus • Chimamanda Ngozi Adichie</p>
+        <h1>Two Households, Two Worlds: Fearful Marble vs Radiant Warmth</h1>
+        <p class="hero__lead">Explore the emotional architecture of Papa Eugene's immaculate compound and Aunty Ifeoma's bustling flat. Scroll, hover, drag, and listen to feel how control or freedom shapes every room, voice, and ritual.</p>
+        <div class="hero__actions">
+          <a class="hero__cta" href="#comparison">Start the comparison</a>
+          <a class="hero__link" href="credits.html">Meet the creators</a>
+          <button class="hero__scroll" type="button" data-scroll="#themes">Jump to deep dives</button>
+          <div class="audio-bar" role="group" aria-label="Ambient audio soundscape">
+            <button class="audio-button" type="button" data-scene="eugene">Muted chants</button>
+            <button class="audio-button" type="button" data-scene="ifeoma">Courtyard chatter</button>
+            <span class="audio-status" aria-live="polite">Audio off</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero__motif" aria-hidden="true">
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+              <stop stop-color="#8ea3d2" offset="0" />
+              <stop stop-color="#f4be78" offset="1" />
+            </linearGradient>
+          </defs>
+          <circle cx="200" cy="200" r="180" fill="none" stroke="url(#g1)" stroke-width="12" stroke-dasharray="32 40" stroke-linecap="round" />
+          <path d="M200 40 C300 80 280 170 200 200 C120 230 120 320 200 360" fill="none" stroke="#f4be78" stroke-width="8" stroke-linecap="round" stroke-dasharray="20 16" />
+          <path d="M200 360 C100 320 120 230 200 200 C280 170 300 80 200 40" fill="none" stroke="#8ea3d2" stroke-width="8" stroke-linecap="round" stroke-dasharray="14 20" />
+        </svg>
+      </div>
+    </header>
+
+    <main>
+      <section class="split" id="houses">
+        <article class="panel panel--eugene" data-animate>
+          <header class="panel__header">
+            <p class="panel__eyebrow">Papa Eugene's House</p>
+            <h2 class="panel__title">Marble Perfection Hiding Quiet Terror</h2>
+            <p class="panel__tagline">Imported luxury, frozen laughter, and faith weaponised as control.</p>
+          </header>
+          <div class="panel__body">
+            <div class="insight-grid">
+              <div class="insight" tabindex="0">
+                <p class="insight__tag">Setting</p>
+                <p class="insight__title">Polished altars of order</p>
+                <p class="insight__text">Every room is curated like a cathedral exhibitglass figurines, white lace, and marble floors that echo with absence.</p>
+                <div class="insight__reveal">Beauty is surveillance. Jaja and Kambili tiptoe, knowing a single misplaced bead invites inspection and punishment.</div>
+              </div>
+              <div class="insight" tabindex="0">
+                <p class="insight__tag">Discipline</p>
+                <p class="insight__title">Correction cloaked in prayer</p>
+                <p class="insight__text">Whippings, scalding tea, and forced confessionals are justified as salvation from sin.</p>
+                <div class="insight__reveal">"It is for your own good" becomes a refrainfear masquerading as righteousness, bruises hidden beneath immaculate clothes.</div>
+              </div>
+              <div class="insight" tabindex="0">
+                <p class="insight__tag">Voice</p>
+                <p class="insight__title">Silence rehearsed to perfection</p>
+                <p class="insight__text">Dinner conversations are timed whispers. Newspapers read aloud become lectures, never dialogue.</p>
+                <div class="insight__reveal">The house vibrates with unsaid words; even laughter is scheduled, soft, and quickly swallowed.</div>
+              </div>
+            </div>
+            <blockquote class="quote-card">
+              <strong>Atmosphere</strong>
+              "Silence hung over the table like the heavy chandelier above us." (Chapter 1)
+            </blockquote>
+          </div>
+        </article>
+
+        <article class="panel panel--ifeoma" data-animate>
+          <header class="panel__header">
+            <p class="panel__eyebrow">Aunty Ifeoma's House</p>
+            <h2 class="panel__title">A Modest Flat Singing with Life</h2>
+            <p class="panel__tagline">Crowded rooms, open windows, and a chorus of overlapping opinions.</p>
+          </header>
+          <div class="panel__body">
+            <div class="insight-grid">
+              <div class="insight" tabindex="0">
+                <p class="insight__tag">Setting</p>
+                <p class="insight__title">Warm clutter, living roots</p>
+                <p class="insight__text">Framed hibiscus cuttings, simmering soups, mismatched chairseverything carries fingerprints of use.</p>
+                <div class="insight__reveal">Texture replaces polish. Plants climb the verandah, kids sprawl on the floor, and visitors never leave empty-handed.</div>
+              </div>
+              <div class="insight" tabindex="0">
+                <p class="insight__tag">Freedom</p>
+                <p class="insight__title">Voices braided, never muted</p>
+                <p class="insight__text">Debates about faith, politics, and future dreams roll across the dining table between bites of roasted plantain.</p>
+                <div class="insight__reveal">Kambili discovers that disagreement can be tenderness; every joke is an invitation to join the conversation.</div>
+              </div>
+              <div class="insight" tabindex="0">
+                <p class="insight__tag">Hybrid culture</p>
+                <p class="insight__title">Igbo proverbs meet hymns</p>
+                <p class="insight__text">Catholic mass pairs with folk songs, Nsukka market chatter, and stories of ancestral courage.</p>
+                <div class="insight__reveal">Tradition is not erased but remixeda living pedagogy that teaches resilience alongside reverence.</div>
+              </div>
+            </div>
+            <blockquote class="quote-card">
+              <strong>Atmosphere</strong>
+              "Laughter spilled out like light, touching everything in the cramped space." (Chapter 12)
+            </blockquote>
+          </div>
+        </article>
+      </section>
+
+      <section class="contrast" id="comparison" data-animate>
+        <header>
+          <h2 class="section-heading">Slide Between Silence and Song</h2>
+          <p class="section-lead">Drag the slider to travel through a day shared between both households. Each stop reveals how identical rituals fracture into fear or flourish into freedom.</p>
+        </header>
+        <div class="contrast-stage" aria-live="polite">
+          <div class="contrast-handle">Dawn</div>
+          <div class="contrast-panels">
+            <article class="contrast-pane contrast-pane--cold">
+              <p class="contrast-pane__label">Papa Eugene's House</p>
+              <h3 class="contrast-pane__title" id="contrast-cold-title">Sanctified routines, punished deviation</h3>
+              <p class="contrast-pane__text" id="contrast-cold-text">Rosaries whispered under watchful eyes; any tremor in Kambili's voice stiffens the air.</p>
+            </article>
+            <article class="contrast-pane contrast-pane--warm">
+              <p class="contrast-pane__label">Aunty Ifeoma's House</p>
+              <h3 class="contrast-pane__title" id="contrast-warm-title">Morning prayers braided with teasing</h3>
+              <p class="contrast-pane__text" id="contrast-warm-text">Chike forgets the response and the table erupts; laughter keeps faith breathing.</p>
+            </article>
+          </div>
+          <div class="contrast-tokens" aria-hidden="true">
+            <span class="contrast-token">
+              <svg viewBox="0 0 24 24"><path d="M3 4h10l3 3v13H3V4zm10 0v3h3" /></svg>
+              Locked Doors
+            </span>
+            <span class="contrast-token">
+              <svg viewBox="0 0 24 24"><path d="M4 10l7.5-7.5L19 10h-3v8H7v-8H4z" /></svg>
+              Open Windows
+            </span>
+          </div>
+        </div>
+        <input class="contrast-slider" type="range" id="contrast-slider" min="0" max="100" value="20" aria-label="Contrast timeline slider" />
+        <p class="timeline-note" id="timeline-note">06:00 · Dawn devotions vs dawn banter</p>
+      </section>
+
+      <section id="themes" data-animate>
+        <header style="text-align:center;max-width:780px;margin:0 auto 2rem;">
+          <h2 class="section-heading">Deep Dives by Theme</h2>
+          <p class="section-lead">Collapse each lens to compare how religion, discipline, family, and identity mutate inside both homes.</p>
+        </header>
+        <div class="accordion-group">
+          <article class="accordion" data-animate>
+            <button class="accordion__trigger" type="button" aria-expanded="false">
+              Religion & Power
+              <span>Doctrine vs devotion</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5L5 8.5l1.4-1.4L12 12.7l5.6-5.6L19 8.5z" fill="currentColor" /></svg>
+            </button>
+            <div class="accordion__panel" hidden>
+              <div class="accordion__content">
+                <div class="accordion__side accordion__side--cold">
+                  <h3 class="accordion__title">Faith as surveillance</h3>
+                  <ul class="accordion__list">
+                    <li>Schedules of rosaries, novenas, and confession leave no space for personal inquiry.</li>
+                    <li>Holy water stings fresh woundspunishment repackaged as purification.</li>
+                    <li>Refusal to acknowledge traditional rites turns the household into a mission outpost.</li>
+                  </ul>
+                </div>
+                <div class="accordion__side accordion__side--warm">
+                  <h3 class="accordion__title">Faith as conversation</h3>
+                  <ul class="accordion__list">
+                    <li>Prayers blend with Igbo proverbs, grounding siblings in cultural memory.</li>
+                    <li>Mass is followed by critical analysisthe kids debate homilies with Aunty Ifeoma.</li>
+                    <li>Spirituality models liberation: belief is a road to courage, not submission.</li>
+                  </ul>
+                </div>
+              </div>
+              <p class="accordion__footnote">Contrast the interpretation of Catholicism: one erases ancestral echoes; the other harmonises them.</p>
+            </div>
+          </article>
+
+          <article class="accordion" data-animate>
+            <button class="accordion__trigger" type="button" aria-expanded="false">
+              Family Dynamics
+              <span>Fear vs flourishing</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5L5 8.5l1.4-1.4L12 12.7l5.6-5.6L19 8.5z" fill="currentColor" /></svg>
+            </button>
+            <div class="accordion__panel" hidden>
+              <div class="accordion__content">
+                <div class="accordion__side accordion__side--cold">
+                  <h3 class="accordion__title">Authoritarian choreography</h3>
+                  <ul class="accordion__list">
+                    <li>Every affection is conditional. Mama Beatrice rehearses smiles after hidings.</li>
+                    <li>Meals run like military parades; chairs scrape in sync, prayers recited by rote.</li>
+                    <li>Secrets are survival tools: the children script responses to avoid punishment.</li>
+                  </ul>
+                </div>
+                <div class="accordion__side accordion__side--warm">
+                  <h3 class="accordion__title">Communal improvisation</h3>
+                  <ul class="accordion__list">
+                    <li>Handwritten schedules collapse; spontaneity is celebrated as resourcefulness.</li>
+                    <li>Jokes, teasing, and play-fights become bonding rituals.</li>
+                    <li>Caretaking is collectivefrom cooking to tutoring, everyone contributes.</li>
+                  </ul>
+                </div>
+              </div>
+              <p class="accordion__footnote">Observe Jaja's transformation: silence cracks, then speech blooms.</p>
+            </div>
+          </article>
+
+          <article class="accordion" data-animate>
+            <button class="accordion__trigger" type="button" aria-expanded="false">
+              Identity & Voice
+              <span>Control vs agency</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.5L5 8.5l1.4-1.4L12 12.7l5.6-5.6L19 8.5z" fill="currentColor" /></svg>
+            </button>
+            <div class="accordion__panel" hidden>
+              <div class="accordion__content">
+                <div class="accordion__side accordion__side--cold">
+                  <h3 class="accordion__title">Muting difference</h3>
+                  <ul class="accordion__list">
+                    <li>English replaces Igbo; Papa's paper dismisses indigenous news as pagan.</li>
+                    <li>Kambili memorises acceptable phrases, reading expression through Papa's mood.</li>
+                    <li>Physical injuries translate into internalised shame and self-effacement.</li>
+                  </ul>
+                </div>
+                <div class="accordion__side accordion__side--warm">
+                  <h3 class="accordion__title">Amplifying perspective</h3>
+                  <ul class="accordion__list">
+                    <li>Debates extend to the university campus; activism intertwines with faith.</li>
+                    <li>Chatter welcomes code-switchingEnglish, Igbo, and Pidgin co-exist.</li>
+                    <li>Kambili sketches new identities, learning that voice can be gentle and firm.</li>
+                  </ul>
+                </div>
+              </div>
+              <p class="accordion__footnote">By the journey's end, the hibiscus bloom purple: a hybrid identity cultivated in Nsukka.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      Crafted as an interactive study companion. Use the sections above to collect quotations, thematic claims, and sensory contrasts for essays or discussions.
+    </footer>
+  </div>
+
+  <script>
+    (function() {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const panels = document.querySelectorAll('[data-animate]');
+      if (!prefersReducedMotion && 'IntersectionObserver' in window) {
+        const reveal = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              reveal.unobserve(entry.target);
+            }
+          });
+        }, { threshold:0.2 });
+        panels.forEach(panel => reveal.observe(panel));
+      } else {
+        panels.forEach(panel => panel.classList.add('is-visible'));
+      }
+    })();
+
+    (function() {
+      const slider = document.getElementById('contrast-slider');
+      const note = document.getElementById('timeline-note');
+      const coldTitle = document.getElementById('contrast-cold-title');
+      const warmTitle = document.getElementById('contrast-warm-title');
+      const coldText = document.getElementById('contrast-cold-text');
+      const warmText = document.getElementById('contrast-warm-text');
+      const handle = document.querySelector('.contrast-handle');
+      const root = document.documentElement;
+
+      const states = [
+        { value:0, label:'Dawn', time:'05:30', note:'Matins vs rooster chorus', cold:{ title:'Sanctified routines, punished deviation', text:'Rosaries whispered under watchful eyes; any tremor in Kambili\u2019s voice stiffens the air.' }, warm:{ title:'Morning prayers braided with teasing', text:'Chike forgets the response and the table erupts; laughter keeps faith breathing.' } },
+        { value:25, label:'Breakfast', time:'07:00', note:'Silenced cutlery vs storytelling', cold:{ title:'Breakfast under surveillance', text:'Silverware lines up like soldiers. Papa rations conversation alongside pap and akara.' }, warm:{ title:'Meals as open mic', text:'Aunty Ifeoma ladles spicy stew while students debate campus strikes and joke about lectures.' } },
+        { value:50, label:'Afternoon', time:'13:30', note:'Factory inspections vs campus errands', cold:{ title:'Order enforced by absence', text:'Papa audits the presses; his shadow lingers. Mama polishes figurines to erase bruises.' }, warm:{ title:'Community errands', text:'Cousins swap market chores, then pull neighbours into impromptu storytelling on the verandah.' } },
+        { value:75, label:'Evening', time:'19:15', note:'Hush vs hymns', cold:{ title:'Family rosary as tribunal', text:'Voices recite decades in perfect rhythm. Any stumble sparks sharp correction.' }, warm:{ title:'Supper songs and homework help', text:'Obiora hums Igbo hymns while helping Kambili with algebra; the kitchen smells of pepper soup.' } },
+        { value:100, label:'Night', time:'22:00', note:'Locked shutters vs stargazing', cold:{ title:'Fear sealed behind glass', text:'Doors bolted, pages memorised, bruises tended in whispers. Sleep arrives with clenched fists.' }, warm:{ title:'Dreams through open windows', text:'Crickets, campus distant drums, whispered plans for the future. Freedom tastes like cool night air.' } }
+      ];
+
+      const updateFromSlider = (value) => {
+        root.style.setProperty('--slider-value', value);
+        handle.style.left = `${value}%`;
+        const closest = states.reduce((prev, curr) => Math.abs(curr.value - value) < Math.abs(prev.value - value) ? curr : prev, states[0]);
+        handle.textContent = closest.label;
+        note.textContent = `${closest.time} \u00b7 ${closest.note}`;
+        coldTitle.textContent = closest.cold.title;
+        coldText.textContent = closest.cold.text;
+        warmTitle.textContent = closest.warm.title;
+        warmText.textContent = closest.warm.text;
+      };
+
+      slider.addEventListener('input', (event) => {
+        updateFromSlider(Number(event.target.value));
+      });
+
+      updateFromSlider(Number(slider.value));
+    })();
+
+    (function() {
+      const triggers = document.querySelectorAll('.accordion__trigger');
+      triggers.forEach(trigger => {
+        trigger.addEventListener('click', () => {
+          const expanded = trigger.getAttribute('aria-expanded') === 'true';
+          trigger.setAttribute('aria-expanded', String(!expanded));
+          const panel = trigger.nextElementSibling;
+          if (panel) {
+            panel.hidden = expanded;
+          }
+        });
+      });
+    })();
+
+    (function() {
+      const scrollButtons = document.querySelectorAll('[data-scroll]');
+      scrollButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const selector = btn.getAttribute('data-scroll');
+          const target = selector ? document.querySelector(selector) : null;
+          if (target) {
+            target.scrollIntoView({ behavior:'smooth', block:'start' });
+          }
+        });
+      });
+    })();
+
+    (function() {
+      const buttons = document.querySelectorAll('.audio-button');
+      const status = document.querySelector('.audio-status');
+      if (!buttons.length || !status || !window.AudioContext) {
+        if (status) {
+          status.textContent = 'Audio unavailable';
+        }
+        return;
+      }
+
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      let currentScene = null;
+      let activeNodes = [];
+
+      const stopScene = () => {
+        activeNodes.forEach(node => {
+          if (typeof node.stop === 'function') {
+            try { node.stop(); } catch (err) { /* ignore */ }
+          }
+          node.disconnect();
+        });
+        activeNodes = [];
+        currentScene = null;
+        buttons.forEach(btn => btn.classList.remove('is-active'));
+        status.textContent = 'Audio off';
+      };
+
+      const startScene = async (scene, button) => {
+        if (currentScene === scene) {
+          stopScene();
+          return;
+        }
+
+        try {
+          await audioCtx.resume();
+        } catch (err) {
+          console.error(err);
+        }
+
+        stopScene();
+        currentScene = scene;
+        buttons.forEach(btn => btn.classList.toggle('is-active', btn === button));
+
+        const masterGain = audioCtx.createGain();
+        masterGain.gain.value = scene === 'eugene' ? 0.02 : 0.035;
+        masterGain.connect(audioCtx.destination);
+        activeNodes.push(masterGain);
+
+        const baseOsc = audioCtx.createOscillator();
+        baseOsc.type = scene === 'eugene' ? 'sine' : 'triangle';
+        baseOsc.frequency.value = scene === 'eugene' ? 140 : 320;
+        baseOsc.connect(masterGain);
+        baseOsc.start();
+        activeNodes.push(baseOsc);
+
+        const lfo = audioCtx.createOscillator();
+        lfo.type = 'sine';
+        lfo.frequency.value = scene === 'eugene' ? 0.3 : 0.6;
+        const lfoGain = audioCtx.createGain();
+        lfoGain.gain.value = scene === 'eugene' ? 20 : 50;
+        lfo.connect(lfoGain);
+        lfoGain.connect(baseOsc.detune);
+        lfo.start();
+        activeNodes.push(lfo, lfoGain);
+
+        if (scene === 'ifeoma') {
+          const chirp = audioCtx.createOscillator();
+          chirp.type = 'sawtooth';
+          chirp.frequency.value = 760;
+          const chirpGain = audioCtx.createGain();
+          chirpGain.gain.value = 0.01;
+          const chirpFilter = audioCtx.createBiquadFilter();
+          chirpFilter.type = 'bandpass';
+          chirpFilter.frequency.value = 1800;
+          chirp.connect(chirpGain);
+          chirpGain.connect(chirpFilter);
+          chirpFilter.connect(masterGain);
+          chirp.start();
+          activeNodes.push(chirp, chirpGain, chirpFilter);
+        }
+
+        status.textContent = scene === 'eugene' ? 'Muted chants playing' : 'Courtyard chatter playing';
+      };
+
+      buttons.forEach(button => {
+        button.addEventListener('click', () => startScene(button.dataset.scene, button));
+      });
+
+      window.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          stopScene();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
