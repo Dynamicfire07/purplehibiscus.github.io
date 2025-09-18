@@ -37,6 +37,78 @@
       -webkit-font-smoothing:antialiased;
     }
 
+    .topbar {
+      position:sticky;
+      top:0;
+      z-index:30;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1.2rem;
+      padding:0.85rem clamp(1.2rem,5vw,3.6rem);
+      background:rgba(255,255,255,0.86);
+      border-bottom:1px solid rgba(20,20,30,0.08);
+      backdrop-filter:blur(14px);
+    }
+
+    .topbar__logo {
+      display:flex;
+      align-items:center;
+      gap:0.65rem;
+      font-family:var(--serif);
+      font-weight:700;
+      font-size:1.05rem;
+      color:#16182d;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      background:none;
+      border:none;
+      padding:0;
+      cursor:pointer;
+    }
+
+    .topbar__logo::before {
+      content:"";
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      background:var(--accent);
+      box-shadow:0 0 0 5px rgba(120,73,255,0.16);
+    }
+
+    .topbar__nav {
+      display:flex;
+      flex-wrap:wrap;
+      gap:0.6rem;
+    }
+
+    .topbar__nav button {
+      appearance:none;
+      border-radius:999px;
+      border:1px solid rgba(20,20,30,0.12);
+      background:rgba(255,255,255,0.7);
+      padding:0.45rem 1.1rem;
+      font-weight:600;
+      font-size:0.85rem;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      color:#1d2034;
+      cursor:pointer;
+      transition:transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .topbar__nav button:hover,
+    .topbar__nav button:focus-visible {
+      transform:translateY(-2px);
+      border-color:rgba(120,73,255,0.32);
+      box-shadow:0 12px 26px rgba(30,20,60,0.18);
+    }
+
+    .topbar__logo:focus-visible {
+      outline:2px solid var(--accent);
+      outline-offset:4px;
+    }
+
     .page {
       min-height:100vh;
       display:flex;
@@ -100,7 +172,6 @@
 
     a.hero__cta,
     a.hero__link,
-    button.audio-button,
     button.hero__scroll {
       appearance:none;
       border:none;
@@ -139,6 +210,7 @@
       transform:translateY(-2px);
       box-shadow:0 12px 24px rgba(17,21,35,0.16);
     }
+
 
     .hero__motif {
       position:absolute;
@@ -515,34 +587,6 @@
       transition:left 0.25s ease;
     }
 
-    .contrast-tokens {
-      position:absolute;
-      inset:0;
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-end;
-      padding:1.4rem 1.6rem;
-      pointer-events:none;
-      font-size:0.85rem;
-      font-weight:600;
-      letter-spacing:0.12em;
-    }
-
-    .contrast-token {
-      display:inline-flex;
-      align-items:center;
-      gap:0.45rem;
-      background:rgba(255,255,255,0.18);
-      padding:0.35rem 0.75rem;
-      border-radius:999px;
-      backdrop-filter:blur(10px);
-    }
-
-    .contrast-token svg {
-      width:18px;
-      height:18px;
-      fill:currentColor;
-    }
 
     .accordion-group {
       display:grid;
@@ -650,41 +694,6 @@
       margin:0;
     }
 
-    .audio-bar {
-      display:flex;
-      align-items:center;
-      gap:0.75rem;
-      background:rgba(255,255,255,0.7);
-      border-radius:18px;
-      padding:0.55rem 0.65rem 0.55rem 0.85rem;
-      border:1px solid rgba(20,20,30,0.08);
-      backdrop-filter:blur(12px);
-      width:max-content;
-    }
-
-    .audio-button {
-      background:rgba(20,20,40,0.06);
-      color:#212439;
-      padding:0.55rem 1rem;
-      border-radius:12px;
-      border:1px solid transparent;
-      font-size:0.85rem;
-      transition:all 0.25s ease;
-    }
-
-    .audio-button.is-active {
-      background:var(--accent);
-      color:white;
-      box-shadow:0 10px 22px rgba(120,73,255,0.26);
-    }
-
-    .audio-status {
-      font-size:0.78rem;
-      letter-spacing:0.16em;
-      text-transform:uppercase;
-      color:var(--muted);
-    }
-
     .timeline-note {
       margin:0;
       font-size:0.9rem;
@@ -722,6 +731,28 @@
     }
 
     @media (max-width:720px) {
+      .topbar {
+        flex-direction:column;
+        align-items:flex-start;
+        gap:0.9rem;
+        padding:0.8rem 1.2rem;
+      }
+
+      .topbar__logo {
+        width:100%;
+        justify-content:flex-start;
+      }
+
+      .topbar__nav {
+        width:100%;
+        gap:0.4rem;
+      }
+
+      .topbar__nav button {
+        flex:1 1 0;
+        width:100%;
+      }
+
       .hero__actions {
         flex-direction:column;
         align-items:flex-start;
@@ -739,13 +770,6 @@
         border-radius:22px;
       }
 
-      .contrast-token {
-        font-size:0.72rem;
-      }
-
-      .audio-bar {
-        flex-wrap:wrap;
-      }
     }
 
     @media (prefers-reduced-motion:reduce) {
@@ -759,20 +783,23 @@
 </head>
 <body>
   <div class="page">
+    <header class="topbar">
+      <button class="topbar__logo" type="button" data-scroll="#top">Dual Household Atlas</button>
+      <nav class="topbar__nav" aria-label="Page sections">
+        <button type="button" data-scroll="#houses">Overview</button>
+        <button type="button" data-scroll="#comparison">Contrast</button>
+        <button type="button" data-scroll="#themes">Themes</button>
+      </nav>
+    </header>
     <header class="hero" id="top">
       <div class="hero__content">
         <p class="hero__eyebrow">Purple Hibiscus • Chimamanda Ngozi Adichie</p>
         <h1>Two Households, Two Worlds: Fearful Marble vs Radiant Warmth</h1>
-        <p class="hero__lead">Explore the emotional architecture of Papa Eugene's immaculate compound and Aunty Ifeoma's bustling flat. Scroll, hover, drag, and listen to feel how control or freedom shapes every room, voice, and ritual.</p>
+        <p class="hero__lead">Explore the emotional architecture of Papa Eugene's immaculate compound and Aunty Ifeoma's bustling flat. Scroll, hover, and drag to feel how control or freedom shapes every room, voice, and ritual.</p>
         <div class="hero__actions">
           <a class="hero__cta" href="#comparison">Start the comparison</a>
           <a class="hero__link" href="credits.html">Meet the creators</a>
           <button class="hero__scroll" type="button" data-scroll="#themes">Jump to deep dives</button>
-          <div class="audio-bar" role="group" aria-label="Ambient audio soundscape">
-            <button class="audio-button" type="button" data-scene="eugene">Muted chants</button>
-            <button class="audio-button" type="button" data-scene="ifeoma">Courtyard chatter</button>
-            <span class="audio-status" aria-live="polite">Audio off</span>
-          </div>
         </div>
       </div>
       <div class="hero__motif" aria-hidden="true">
@@ -879,16 +906,6 @@
               <h3 class="contrast-pane__title" id="contrast-warm-title">Morning prayers braided with teasing</h3>
               <p class="contrast-pane__text" id="contrast-warm-text">Chike forgets the response and the table erupts; laughter keeps faith breathing.</p>
             </article>
-          </div>
-          <div class="contrast-tokens" aria-hidden="true">
-            <span class="contrast-token">
-              <svg viewBox="0 0 24 24"><path d="M3 4h10l3 3v13H3V4zm10 0v3h3" /></svg>
-              Locked Doors
-            </span>
-            <span class="contrast-token">
-              <svg viewBox="0 0 24 24"><path d="M4 10l7.5-7.5L19 10h-3v8H7v-8H4z" /></svg>
-              Open Windows
-            </span>
           </div>
         </div>
         <input class="contrast-slider" type="range" id="contrast-slider" min="0" max="100" value="20" aria-label="Contrast timeline slider" />
@@ -1027,10 +1044,10 @@
 
       const states = [
         { value:0, label:'Dawn', time:'05:30', note:'Matins vs rooster chorus', cold:{ title:'Sanctified routines, punished deviation', text:'Rosaries whispered under watchful eyes; any tremor in Kambili\u2019s voice stiffens the air.' }, warm:{ title:'Morning prayers braided with teasing', text:'Chike forgets the response and the table erupts; laughter keeps faith breathing.' } },
-        { value:25, label:'Breakfast', time:'07:00', note:'Silenced cutlery vs storytelling', cold:{ title:'Breakfast under surveillance', text:'Silverware lines up like soldiers. Papa rations conversation alongside pap and akara.' }, warm:{ title:'Meals as open mic', text:'Aunty Ifeoma ladles spicy stew while students debate campus strikes and joke about lectures.' } },
+        { value:25, label:'Breakfast', time:'07:00', note:'Silenced cutlery vs storytelling', cold:{ title:'Breakfast in hushed formation', text:'Spoons click in unison, prayers are recited like drills, and questions stay locked behind tight lips.' }, warm:{ title:'Breakfast becomes a forum', text:'Aunty Ifeoma ladles peppery stew as the cousins trade opinions, playful jabs, and curious what-ifs.' } },
         { value:50, label:'Afternoon', time:'13:30', note:'Factory inspections vs campus errands', cold:{ title:'Order enforced by absence', text:'Papa audits the presses; his shadow lingers. Mama polishes figurines to erase bruises.' }, warm:{ title:'Community errands', text:'Cousins swap market chores, then pull neighbours into impromptu storytelling on the verandah.' } },
         { value:75, label:'Evening', time:'19:15', note:'Hush vs hymns', cold:{ title:'Family rosary as tribunal', text:'Voices recite decades in perfect rhythm. Any stumble sparks sharp correction.' }, warm:{ title:'Supper songs and homework help', text:'Obiora hums Igbo hymns while helping Kambili with algebra; the kitchen smells of pepper soup.' } },
-        { value:100, label:'Night', time:'22:00', note:'Locked shutters vs stargazing', cold:{ title:'Fear sealed behind glass', text:'Doors bolted, pages memorised, bruises tended in whispers. Sleep arrives with clenched fists.' }, warm:{ title:'Dreams through open windows', text:'Crickets, campus distant drums, whispered plans for the future. Freedom tastes like cool night air.' } }
+        { value:100, label:'Night', time:'22:00', note:'Silenced voices vs celebrated voices', cold:{ title:'Speech treated as rebellion', text:"Papa Eugene's house: Voices are silenced. Conversations are clipped, laughter is absent, and silence is enforced out of fear. Expression is seen as rebellion, punished harshly." }, warm:{ title:'Bedrooms humming with dialogue', text:"Aunty Ifeoma's house: Voices are celebrated. Children question freely, laughter fills the rooms, and open dialogue is encouraged. Expression is tied to individuality, growth, and joy." } }
       ];
 
       const updateFromSlider = (value) => {
@@ -1076,101 +1093,6 @@
             target.scrollIntoView({ behavior:'smooth', block:'start' });
           }
         });
-      });
-    })();
-
-    (function() {
-      const buttons = document.querySelectorAll('.audio-button');
-      const status = document.querySelector('.audio-status');
-      if (!buttons.length || !status || !window.AudioContext) {
-        if (status) {
-          status.textContent = 'Audio unavailable';
-        }
-        return;
-      }
-
-      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      let currentScene = null;
-      let activeNodes = [];
-
-      const stopScene = () => {
-        activeNodes.forEach(node => {
-          if (typeof node.stop === 'function') {
-            try { node.stop(); } catch (err) { /* ignore */ }
-          }
-          node.disconnect();
-        });
-        activeNodes = [];
-        currentScene = null;
-        buttons.forEach(btn => btn.classList.remove('is-active'));
-        status.textContent = 'Audio off';
-      };
-
-      const startScene = async (scene, button) => {
-        if (currentScene === scene) {
-          stopScene();
-          return;
-        }
-
-        try {
-          await audioCtx.resume();
-        } catch (err) {
-          console.error(err);
-        }
-
-        stopScene();
-        currentScene = scene;
-        buttons.forEach(btn => btn.classList.toggle('is-active', btn === button));
-
-        const masterGain = audioCtx.createGain();
-        masterGain.gain.value = scene === 'eugene' ? 0.02 : 0.035;
-        masterGain.connect(audioCtx.destination);
-        activeNodes.push(masterGain);
-
-        const baseOsc = audioCtx.createOscillator();
-        baseOsc.type = scene === 'eugene' ? 'sine' : 'triangle';
-        baseOsc.frequency.value = scene === 'eugene' ? 140 : 320;
-        baseOsc.connect(masterGain);
-        baseOsc.start();
-        activeNodes.push(baseOsc);
-
-        const lfo = audioCtx.createOscillator();
-        lfo.type = 'sine';
-        lfo.frequency.value = scene === 'eugene' ? 0.3 : 0.6;
-        const lfoGain = audioCtx.createGain();
-        lfoGain.gain.value = scene === 'eugene' ? 20 : 50;
-        lfo.connect(lfoGain);
-        lfoGain.connect(baseOsc.detune);
-        lfo.start();
-        activeNodes.push(lfo, lfoGain);
-
-        if (scene === 'ifeoma') {
-          const chirp = audioCtx.createOscillator();
-          chirp.type = 'sawtooth';
-          chirp.frequency.value = 760;
-          const chirpGain = audioCtx.createGain();
-          chirpGain.gain.value = 0.01;
-          const chirpFilter = audioCtx.createBiquadFilter();
-          chirpFilter.type = 'bandpass';
-          chirpFilter.frequency.value = 1800;
-          chirp.connect(chirpGain);
-          chirpGain.connect(chirpFilter);
-          chirpFilter.connect(masterGain);
-          chirp.start();
-          activeNodes.push(chirp, chirpGain, chirpFilter);
-        }
-
-        status.textContent = scene === 'eugene' ? 'Muted chants playing' : 'Courtyard chatter playing';
-      };
-
-      buttons.forEach(button => {
-        button.addEventListener('click', () => startScene(button.dataset.scene, button));
-      });
-
-      window.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-          stopScene();
-        }
       });
     })();
   </script>
